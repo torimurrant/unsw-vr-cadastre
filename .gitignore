@@ -12,6 +12,7 @@
 /[Mm]emoryCaptures/
 /[Uu]ser[Ss]ettings/
 /[Rr]ecordings/
+/[Aa]ssets/CesiumSettings/Resources/CesiumIonServers/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
