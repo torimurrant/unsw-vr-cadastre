@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &97037351
 Transform:
   m_ObjectHideFlags: 0
@@ -545,6 +545,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6003973915206570381, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: tileset
+      value: 
+      objectReference: {fileID: 816304002}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1220,7 +1224,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1064317268
 Transform:
   m_ObjectHideFlags: 0
@@ -3096,12 +3100,12 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 501237647}
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1824888596}
   - {fileID: 1577388334}
   - {fileID: 491272179}
   - {fileID: 1851759549}
-  - {fileID: 501237647}
   - {fileID: 1115132794}
   - {fileID: 434518816}

@@ -52,7 +52,7 @@ public class VrMetadataPicker : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject()) return;      // ignore input when hovering over UI object
         if (hoveredMetadata == string.Empty) return;
         selectedMetadata = hoveredMetadata;
-        Debug.Log($"Selected: {selectedMetadata}!");
+        Debug.Log($"Selected:\n\n{selectedMetadata}!");
     }
     
     // Right now, both controllers are raycasting all the time, so if the user is waving
@@ -92,6 +92,7 @@ public class VrMetadataPicker : MonoBehaviour
                 {
                     string valueAsString = valuePair.Value.GetString();
                     if (string.IsNullOrEmpty(valueAsString) || valueAsString == "null") continue;
+                    if (valuePair.Key != "lotNumber" && valuePair.Key != "lot" && valuePair.Key != "planNumber") continue;
                     sb.Append($"<b>{valuePair.Key}</b>: {valueAsString}");
                     sb.AppendLine();
                 }
