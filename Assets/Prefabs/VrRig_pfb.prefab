@@ -934,6 +934,7 @@ GameObject:
   - component: {fileID: 4757326757604621492}
   - component: {fileID: 4739788986401952118}
   - component: {fileID: 1548098246854910816}
+  - component: {fileID: 6003973915206570381}
   m_Layer: 2
   m_Name: VrRig_pfb
   m_TagString: Untagged
@@ -1137,8 +1138,20 @@ MonoBehaviour:
   teleportDistance: 20
   leftController: {fileID: 202364687}
   rightController: {fileID: 1670256624}
-  leftLineVisual: {fileID: 5227292470352409039}
-  rightLineVisual: {fileID: 2998152119438995280}
+--- !u!114 &6003973915206570381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717954561962503725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4593bb4b96878428f4cc24a9ac5c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VrMetadataPicker
+  leftControllerTransform: {fileID: 202364688}
+  rightControllerTransform: {fileID: 1670256625}
 --- !u!1 &1787516059220952802
 GameObject:
   m_ObjectHideFlags: 0
@@ -2636,11 +2649,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a07ef133a37d140a87cdf1f1c75fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2998152119438995280 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8144063156676688850, guid: b200f6587d118224eba8467281481800, type: 3}
-  m_PrefabInstance: {fileID: 6385564673524208770}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8393186890254128703 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3234853630605623997, guid: b200f6587d118224eba8467281481800, type: 3}
@@ -2710,11 +2718,6 @@ PrefabInstance:
 --- !u!4 &1543070802843469984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5745700813747042508, guid: 3df3e1220f2164f448701a6de8084f92, type: 3}
-  m_PrefabInstance: {fileID: 6545633283681792108}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5227292470352409039 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1323442585405899171, guid: 3df3e1220f2164f448701a6de8084f92, type: 3}
   m_PrefabInstance: {fileID: 6545633283681792108}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &8877177980677234388 stripped
