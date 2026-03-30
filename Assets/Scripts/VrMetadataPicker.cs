@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CesiumForUnity;
 using System;
 using System.Text;
+using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -11,6 +12,8 @@ public class VrMetadataPicker : MonoBehaviour
 {
     [SerializeField] private Transform leftControllerTransform = null;
     [SerializeField] private Transform rightControllerTransform = null;
+    [SerializeField] private TextMeshProUGUI metadataTextLeft = null;
+    [SerializeField] private TextMeshProUGUI metadataTextRight = null;
     
     // Cached Dictionary of metadata values. This prevents reallocation every
     // time metadata is sampled from the tileset.
@@ -43,6 +46,8 @@ public class VrMetadataPicker : MonoBehaviour
     private void Start()
     {
         metadataValues = new Dictionary<String, CesiumMetadataValue>();
+        metadataTextLeft.text = "Use the trigger to select metadata!";
+        metadataTextRight.text = "Use the trigger to select metadata!";
     }
     
     // We might need separate left/right functions if we need to distinguish between the 
@@ -52,6 +57,8 @@ public class VrMetadataPicker : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject()) return;      // ignore input when hovering over UI object
         if (hoveredMetadata == string.Empty) return;
         selectedMetadata = hoveredMetadata;
+        metadataTextLeft.text = hoveredMetadata;
+        metadataTextRight.text = selectedMetadata;
         Debug.Log($"Selected:\n\n{selectedMetadata}!");
     }
     
@@ -90,10 +97,13 @@ public class VrMetadataPicker : MonoBehaviour
                 
                 foreach (var valuePair in metadataValues)
                 {
+                    string valueLLabelText = string.Empty;
                     string valueAsString = valuePair.Value.GetString();
                     if (string.IsNullOrEmpty(valueAsString) || valueAsString == "null") continue;
                     if (valuePair.Key != "lotNumber" && valuePair.Key != "lot" && valuePair.Key != "planNumber") continue;
-                    sb.Append($"<b>{valuePair.Key}</b>: {valueAsString}");
+                    if (valuePair.Key == "lotNumber" || valuePair.Key == "lot") valueLLabelText = "Lot";
+                    if (valuePair.Key == "planNumber") valueLLabelText = "Plan";
+                    sb.Append($"<b>{valueLLabelText}:</b> {valueAsString}");
                     sb.AppendLine();
                 }
                 
