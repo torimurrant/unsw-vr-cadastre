@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals;
 
 public class VrFlyingTeleport : MonoBehaviour
 {
@@ -10,7 +11,9 @@ public class VrFlyingTeleport : MonoBehaviour
     [SerializeField] private MeshRenderer teleportFader = null;
     [SerializeField][Range(10.0f, 50.0f)] private float teleportDistance = 20.0f;
     [SerializeField] private GameObject leftController = null;
+    [SerializeField] private CurveVisualController leftControllerVisual = null;
     [SerializeField] private GameObject rightController = null;
+    [SerializeField] private CurveVisualController rightControllerVisual = null;
     private Vector3 teleportVector = Vector3.zero;
     private Vector3 teleportPosition = Vector3.zero;
     private GameObject teleportPreview = null;
@@ -62,8 +65,8 @@ public class VrFlyingTeleport : MonoBehaviour
     private void CancelTeleport(InputAction.CallbackContext ctx)
     {
         if (teleportCoroutine != null) StopCoroutine(teleportCoroutine);
-        leftController.SetActive(true);
-        rightController.SetActive(true);
+        // leftController.SetActive(true);
+        // rightController.SetActive(true);
         teleporting = false;
         Destroy(teleportPreview);
     }
@@ -78,8 +81,8 @@ public class VrFlyingTeleport : MonoBehaviour
     private IEnumerator TeleportCoroutine()
     {
         teleporting = true;
-        leftController.SetActive(false);
-        rightController.SetActive(false);
+        leftControllerVisual.enabled = false;
+        rightControllerVisual.enabled = false;
         yield return new WaitForSeconds(0.1f);
         teleportFader.material.DOFade(1.0f, TELEPORT_FADE_DURATION).SetEase(Ease.OutCirc);
         yield return new WaitForSeconds(TELEPORT_FADE_DURATION);
@@ -88,8 +91,8 @@ public class VrFlyingTeleport : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         teleportFader.material.DOFade(0.0f, TELEPORT_FADE_DURATION).SetEase(Ease.OutCirc);
         yield return new WaitForSeconds(TELEPORT_FADE_DURATION + 0.1f);
-        leftController.SetActive(true);
-        rightController.SetActive(true);
+        leftControllerVisual.enabled = true;
+        rightControllerVisual.enabled = true;
         teleporting = false;
         previewing = false;
     }
