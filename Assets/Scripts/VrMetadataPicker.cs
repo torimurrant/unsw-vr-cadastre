@@ -6,7 +6,7 @@ using System.Text;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals;
 
 public class VrMetadataPicker : MonoBehaviour
 {
@@ -14,15 +14,30 @@ public class VrMetadataPicker : MonoBehaviour
     [SerializeField] private Transform rightControllerTransform = null;
     [SerializeField] private TextMeshProUGUI metadataTextLeft = null;
     [SerializeField] private TextMeshProUGUI metadataTextRight = null;
+    [SerializeField] private GameObject hitLocationVisualPrefab = null;
+    [SerializeField] private CurveVisualController leftLineVisual = null;
+    [SerializeField] private CurveVisualController rightLineVisual = null;
+    [SerializeField] private Gradient hoverOnLineGradient = null;
+    [SerializeField] private Gradient hoverOffLineGradient = null;
+    [SerializeField] private float hoverOffDelay = 0.15f;
     
     // Cached Dictionary of metadata values. This prevents reallocation every
     // time metadata is sampled from the tileset.
     private Dictionary<String, CesiumMetadataValue> metadataValues = null;
     private VrControls vrControls = null;
+    private GameObject hitLocationLeftObject = null;
+    private GameObject hitLocationRightObject = null;
     private string hoveredMetadata = string.Empty;
     private string selectedMetadata = string.Empty;
+    private bool wasHoveringAnyLastFrame = false;
+    private bool hoverOnLeft = false;
+    private bool hoverOnRight = false;
+    private float hoverOffTimer = 0f;
     
+    private const float SPHERECAST_RADIUS = 0.1f; // tweak 0.02–0.1
     private const float RAYCAST_DISTANCE = 1000.0f;
+    private const float HIT_LOCATION_RESET = -3000.0f;
+    private const float RAY_VISUAL_LINE_LENGTH = 40.0f;
 
     private void Awake()
     {
@@ -48,6 +63,17 @@ public class VrMetadataPicker : MonoBehaviour
         metadataValues = new Dictionary<String, CesiumMetadataValue>();
         metadataTextLeft.text = "Use the trigger to select metadata!";
         metadataTextRight.text = "Use the trigger to select metadata!";
+        hitLocationLeftObject =  Instantiate(hitLocationVisualPrefab);
+        hitLocationLeftObject.name = "hitLocationLeft";
+        hitLocationLeftObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
+        hitLocationRightObject =  Instantiate(hitLocationVisualPrefab);
+        hitLocationRightObject.name = "hitLocationRight";
+        hitLocationRightObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
+        leftLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
+        leftLineVisual.restingVisualLineLength = RAY_VISUAL_LINE_LENGTH;
+        rightLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
+        rightLineVisual.restingVisualLineLength = RAY_VISUAL_LINE_LENGTH;
+        
     }
     
     // We might need separate left/right functions if we need to distinguish between the 
@@ -69,23 +95,48 @@ public class VrMetadataPicker : MonoBehaviour
     // could require a button press-hold, and then some other input for selecting (release, or button press).
     private void Update()
     {
-        if (leftControllerTransform) RayCastForMetadata(leftControllerTransform);
-        if (rightControllerTransform) RayCastForMetadata(rightControllerTransform);
+        // Reset per-frame state
+        hoverOnLeft = false;
+        hoverOnRight = false;
+
+        if (leftControllerTransform) RayCastForMetadata(leftControllerTransform, true);
+        if (rightControllerTransform) RayCastForMetadata(rightControllerTransform, false);
+
+        CheckForHoverOff();
     }
     
-    private void RayCastForMetadata(Transform controllerTransform)
+    private void RayCastForMetadata(Transform controllerTransform, bool isLeft)
     {
         RaycastHit hit;
         
-        if (Physics.Raycast(controllerTransform.position, controllerTransform.TransformDirection(Vector3.forward), out hit, RAYCAST_DISTANCE))
-        {
+        if (Physics.SphereCast(
+                controllerTransform.position,
+                SPHERECAST_RADIUS,
+                controllerTransform.TransformDirection(Vector3.forward),
+                out hit,
+                RAYCAST_DISTANCE))        {
             CesiumPrimitiveFeatures features = hit.transform.GetComponent<CesiumPrimitiveFeatures>();
             CesiumModelMetadata metadata = hit.transform.GetComponentInParent<CesiumModelMetadata>();
+            GameEvents.OnModelMetadataHoverOn(metadata);
             
             if (features && features.featureIdSets.Length > 0)
             {
+                if (isLeft)
+                {
+                    hoverOnLeft = true;
+                    hitLocationLeftObject.transform.position = hit.point;
+                    leftLineVisual.noValidHitProperties.gradient = hoverOnLineGradient;
+                }
+                else
+                {
+                    hoverOnRight = true;
+                    hitLocationRightObject.transform.position = hit.point;
+                    rightLineVisual.noValidHitProperties.gradient = hoverOnLineGradient;
+                }
+                
                 CesiumFeatureIdSet featureIdSet = features.featureIdSets[0];
                 Int64 propertyTableIndex = featureIdSet.propertyTableIndex;
+                
                 if (metadata && propertyTableIndex >= 0 && propertyTableIndex < metadata.propertyTables.Length)
                 {
                     CesiumPropertyTable propertyTable = metadata.propertyTables[propertyTableIndex];
@@ -109,10 +160,47 @@ public class VrMetadataPicker : MonoBehaviour
                 
                 hoveredMetadata = sb.ToString();
                 Debug.Log($"Hovering on: {hoveredMetadata}!");
-                return;
             }
+            
+            return; 
         }
         
         hoveredMetadata = string.Empty;
+        
+        if (isLeft)
+        {
+            hitLocationLeftObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
+            leftLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
+        }
+        else
+        {
+            hitLocationRightObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
+            rightLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
+        }
+    }
+    
+    private void CheckForHoverOff()
+    {
+        bool isHoveringAny = hoverOnLeft || hoverOnRight;
+
+        if (isHoveringAny)
+        {
+            // Reset timer immediately when we have a valid hit
+            hoverOffTimer = 0f;
+            wasHoveringAnyLastFrame = true;
+            return;
+        }
+
+        // No hover this frame → accumulate time
+        hoverOffTimer += Time.deltaTime;
+
+        // Only trigger if we've been off for long enough
+        if (wasHoveringAnyLastFrame && hoverOffTimer >= hoverOffDelay)
+        {
+            GameEvents.OnModelMetadataHoverOffAll();
+            Debug.Log("Hover OFF (debounced)");
+
+            wasHoveringAnyLastFrame = false;
+        }
     }
 }
