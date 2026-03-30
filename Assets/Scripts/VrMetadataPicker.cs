@@ -27,8 +27,10 @@ public class VrMetadataPicker : MonoBehaviour
     private VrControls vrControls = null;
     private GameObject hitLocationLeftObject = null;
     private GameObject hitLocationRightObject = null;
-    private string hoveredMetadata = string.Empty;
-    private string selectedMetadata = string.Empty;
+    private string hoveredMetadataLeft = string.Empty;
+    private string selectedMetadataLeft = string.Empty;
+    private string hoveredMetadataRight = string.Empty;
+    private string selectedMetadataRight = string.Empty;
     private bool wasHoveringAnyLastFrame = false;
     private bool hoverOnLeft = false;
     private bool hoverOnRight = false;
@@ -46,15 +48,15 @@ public class VrMetadataPicker : MonoBehaviour
     
     private void OnEnable()
     {
-        vrControls.XRILeftInteraction.Activate.performed += OnTriggerPress;
-        vrControls.XRIRightInteraction.Activate.performed += OnTriggerPress;
+        vrControls.XRILeftInteraction.Activate.performed += OnTriggerPressLeft;
+        vrControls.XRIRightInteraction.Activate.performed += OnTriggerPressRight;
         vrControls.Enable();
     }
     
     private void OnDisable()
     {
-        vrControls.XRILeftInteraction.Activate.performed -= OnTriggerPress;
-        vrControls.XRIRightInteraction.Activate.performed -= OnTriggerPress;
+        vrControls.XRILeftInteraction.Activate.performed -= OnTriggerPressLeft;
+        vrControls.XRIRightInteraction.Activate.performed -= OnTriggerPressRight;
         vrControls.Disable();
     }
     
@@ -78,14 +80,20 @@ public class VrMetadataPicker : MonoBehaviour
     
     // We might need separate left/right functions if we need to distinguish between the 
     // two controller inputs, for some reason.
-    private void OnTriggerPress(InputAction.CallbackContext obj)
+    private void OnTriggerPressLeft(InputAction.CallbackContext obj)
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;      // ignore input when hovering over UI object
-        if (hoveredMetadata == string.Empty) return;
-        selectedMetadata = hoveredMetadata;
-        metadataTextLeft.text = hoveredMetadata;
-        metadataTextRight.text = selectedMetadata;
-        Debug.Log($"Selected:\n\n{selectedMetadata}!");
+        if (hoveredMetadataLeft == string.Empty) return;
+        selectedMetadataLeft = hoveredMetadataLeft;
+        metadataTextLeft.text = selectedMetadataLeft;
+    }
+    
+    private void OnTriggerPressRight(InputAction.CallbackContext obj)
+    {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (hoveredMetadataRight == string.Empty) return;
+        selectedMetadataRight = hoveredMetadataRight;
+        metadataTextRight.text = selectedMetadataRight;
     }
     
     // Right now, both controllers are raycasting all the time, so if the user is waving
@@ -109,63 +117,64 @@ public class VrMetadataPicker : MonoBehaviour
     {
         RaycastHit hit;
         
-        if (Physics.SphereCast(
-                controllerTransform.position,
-                SPHERECAST_RADIUS,
-                controllerTransform.TransformDirection(Vector3.forward),
-                out hit,
-                RAYCAST_DISTANCE))        {
+        if (Physics.SphereCast(controllerTransform.position, SPHERECAST_RADIUS, controllerTransform.TransformDirection(Vector3.forward), out hit, RAYCAST_DISTANCE))
+        {
             CesiumPrimitiveFeatures features = hit.transform.GetComponent<CesiumPrimitiveFeatures>();
             CesiumModelMetadata metadata = hit.transform.GetComponentInParent<CesiumModelMetadata>();
             GameEvents.OnModelMetadataHoverOn(metadata);
+            if (!features || features.featureIdSets.Length <= 0) return;
             
-            if (features && features.featureIdSets.Length > 0)
+            if (isLeft)
             {
-                if (isLeft)
-                {
-                    hoverOnLeft = true;
-                    hitLocationLeftObject.transform.position = hit.point;
-                    leftLineVisual.noValidHitProperties.gradient = hoverOnLineGradient;
-                }
-                else
-                {
-                    hoverOnRight = true;
-                    hitLocationRightObject.transform.position = hit.point;
-                    rightLineVisual.noValidHitProperties.gradient = hoverOnLineGradient;
-                }
+                hoverOnLeft = true;
+                hitLocationLeftObject.transform.position = hit.point;
+                leftLineVisual.noValidHitProperties.gradient = hoverOnLineGradient;
+            }
+            else
+            {
+                hoverOnRight = true;
+                hitLocationRightObject.transform.position = hit.point;
+                rightLineVisual.noValidHitProperties.gradient = hoverOnLineGradient;
+            }
                 
-                CesiumFeatureIdSet featureIdSet = features.featureIdSets[0];
-                Int64 propertyTableIndex = featureIdSet.propertyTableIndex;
+            CesiumFeatureIdSet featureIdSet = features.featureIdSets[0];
+            Int64 propertyTableIndex = featureIdSet.propertyTableIndex;
+            
+            if (metadata && propertyTableIndex >= 0 && propertyTableIndex < metadata.propertyTables.Length)
+            {
+                CesiumPropertyTable propertyTable = metadata.propertyTables[propertyTableIndex];
+                Int64 featureID = featureIdSet.GetFeatureIdFromRaycastHit(hit);
+                propertyTable.GetMetadataValuesForFeature(metadataValues, featureID);
+            }
+            
+            StringBuilder sb = new();
+            
+            foreach (var valuePair in metadataValues)
+            {
+                string valueLLabelText = string.Empty;
+                string valueAsString = valuePair.Value.GetString();
+                if (string.IsNullOrEmpty(valueAsString) || valueAsString == "null") continue;
+                if (valuePair.Key != "lotNumber" && valuePair.Key != "lot" && valuePair.Key != "planNumber") continue;
+                if (valuePair.Key == "lotNumber" || valuePair.Key == "lot") valueLLabelText = "Lot";
+                if (valuePair.Key == "planNumber") valueLLabelText = "Plan";
+                sb.Append($"<b>{valueLLabelText}:</b> {valueAsString}");
+                sb.AppendLine();
+            }
                 
-                if (metadata && propertyTableIndex >= 0 && propertyTableIndex < metadata.propertyTables.Length)
-                {
-                    CesiumPropertyTable propertyTable = metadata.propertyTables[propertyTableIndex];
-                    Int64 featureID = featureIdSet.GetFeatureIdFromRaycastHit(hit);
-                    propertyTable.GetMetadataValuesForFeature(metadataValues, featureID);
-                }
-                
-                StringBuilder sb = new();
-                
-                foreach (var valuePair in metadataValues)
-                {
-                    string valueLLabelText = string.Empty;
-                    string valueAsString = valuePair.Value.GetString();
-                    if (string.IsNullOrEmpty(valueAsString) || valueAsString == "null") continue;
-                    if (valuePair.Key != "lotNumber" && valuePair.Key != "lot" && valuePair.Key != "planNumber") continue;
-                    if (valuePair.Key == "lotNumber" || valuePair.Key == "lot") valueLLabelText = "Lot";
-                    if (valuePair.Key == "planNumber") valueLLabelText = "Plan";
-                    sb.Append($"<b>{valueLLabelText}:</b> {valueAsString}");
-                    sb.AppendLine();
-                }
-                
-                hoveredMetadata = sb.ToString();
-                Debug.Log($"Hovering on: {hoveredMetadata}!");
+            if (isLeft)
+            {
+                hoveredMetadataLeft = sb.ToString();
+            }
+            else
+            {
+                hoveredMetadataRight = sb.ToString(); 
             }
             
             return; 
         }
         
-        hoveredMetadata = string.Empty;
+        hoveredMetadataLeft = string.Empty;
+        hoveredMetadataRight = string.Empty;
         
         if (isLeft)
         {
@@ -198,8 +207,7 @@ public class VrMetadataPicker : MonoBehaviour
         if (wasHoveringAnyLastFrame && hoverOffTimer >= hoverOffDelay)
         {
             GameEvents.OnModelMetadataHoverOffAll();
-            Debug.Log("Hover OFF (debounced)");
-
+            //Debug.Log("Hover OFF (debounced)");
             wasHoveringAnyLastFrame = false;
         }
     }
