@@ -103,20 +103,19 @@ public class VrMetadataPicker : MonoBehaviour
     // could require a button press-hold, and then some other input for selecting (release, or button press).
     private void Update()
     {
-        // Reset per-frame state
-        hoverOnLeft = false;
-        hoverOnRight = false;
-
+        // // Reset per-frame state
+        // hoverOnLeft = false;
+        // hoverOnRight = false;
         if (leftControllerTransform) RayCastForMetadata(leftControllerTransform, true);
         if (rightControllerTransform) RayCastForMetadata(rightControllerTransform, false);
-
-        CheckForHoverOff();
+        //CheckForHoverOff();
     }
     
     private void RayCastForMetadata(Transform controllerTransform, bool isLeft)
     {
         RaycastHit hit;
         
+        // Raycast hit detected
         if (Physics.SphereCast(controllerTransform.position, SPHERECAST_RADIUS, controllerTransform.TransformDirection(Vector3.forward), out hit, RAYCAST_DISTANCE))
         {
             CesiumPrimitiveFeatures features = hit.transform.GetComponent<CesiumPrimitiveFeatures>();
@@ -148,18 +147,23 @@ public class VrMetadataPicker : MonoBehaviour
             }
             
             StringBuilder sb = new();
+            StringBuilder sbFull = new();
             
             foreach (var valuePair in metadataValues)
             {
                 string valueLLabelText = string.Empty;
                 string valueAsString = valuePair.Value.GetString();
                 if (string.IsNullOrEmpty(valueAsString) || valueAsString == "null") continue;
+                sbFull.Append($"<b>{valuePair.Key}:</b> {valueAsString}");
+                sbFull.AppendLine();
                 if (valuePair.Key != "lotNumber" && valuePair.Key != "lot" && valuePair.Key != "planNumber") continue;
                 if (valuePair.Key == "lotNumber" || valuePair.Key == "lot") valueLLabelText = "Lot";
                 if (valuePair.Key == "planNumber") valueLLabelText = "Plan";
                 sb.Append($"<b>{valueLLabelText}:</b> {valueAsString}");
                 sb.AppendLine();
             }
+            
+            Debug.Log(sbFull.ToString());
                 
             if (isLeft)
             {
@@ -173,42 +177,52 @@ public class VrMetadataPicker : MonoBehaviour
             return; 
         }
         
-        hoveredMetadataLeft = string.Empty;
-        hoveredMetadataRight = string.Empty;
-        
+        // No raycast hit detected
         if (isLeft)
         {
+            if (!hoverOnLeft) return;
+            hoverOnLeft = false;
+            Debug.Log("Hover off left!");
+            hoveredMetadataLeft = string.Empty;
             hitLocationLeftObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
             leftLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
         }
         else
         {
+            if (!hoverOnRight) return;
+            hoverOnRight = false;
+            Debug.Log("Hover off right!");
+            hoveredMetadataRight = string.Empty;
             hitLocationRightObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
             rightLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
         }
     }
     
-    private void CheckForHoverOff()
-    {
-        bool isHoveringAny = hoverOnLeft || hoverOnRight;
-
-        if (isHoveringAny)
-        {
-            // Reset timer immediately when we have a valid hit
-            hoverOffTimer = 0f;
-            wasHoveringAnyLastFrame = true;
-            return;
-        }
-
-        // No hover this frame → accumulate time
-        hoverOffTimer += Time.deltaTime;
-
-        // Only trigger if we've been off for long enough
-        if (wasHoveringAnyLastFrame && hoverOffTimer >= hoverOffDelay)
-        {
-            GameEvents.OnModelMetadataHoverOffAll();
-            //Debug.Log("Hover OFF (debounced)");
-            wasHoveringAnyLastFrame = false;
-        }
-    }
+    // private void CheckForHoverOff()
+    // {
+    //     bool isHoveringAny = hoverOnLeft || hoverOnRight;
+    //
+    //     if (isHoveringAny)
+    //     {
+    //         // Reset timer immediately when we have a valid hit
+    //         hoverOffTimer = 0f;
+    //         wasHoveringAnyLastFrame = true;
+    //         return;
+    //     }
+    //
+    //     // No hover this frame → accumulate time
+    //     hoverOffTimer += Time.deltaTime;
+    //     
+    //     // Only trigger if we've been off for long enough
+    //     if (wasHoveringAnyLastFrame && hoverOffTimer >= hoverOffDelay)
+    //     {
+    //         GameEvents.OnModelMetadataHoverOffAll();
+    //         //Debug.Log("Hover OFF (debounced)");
+    //         wasHoveringAnyLastFrame = false;
+    //         hitLocationLeftObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
+    //         leftLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
+    //         hitLocationRightObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
+    //         rightLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
+    //     }
+    // }
 }
