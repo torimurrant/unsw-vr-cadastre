@@ -6,6 +6,7 @@ using System.Text;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
 using UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals;
 
 public class VrMetadataPicker : MonoBehaviour
@@ -22,6 +23,8 @@ public class VrMetadataPicker : MonoBehaviour
     [SerializeField] private Gradient hoverOnLineGradient = null;
     [SerializeField] private Gradient hoverOffLineGradient = null;
     [SerializeField] private float hoverOffDelay = 0.15f;
+    [SerializeField] private HapticImpulsePlayer hapticsLeft = null;
+    [SerializeField] private HapticImpulsePlayer hapticsRight = null;
     
     // Cached Dictionary of metadata values. This prevents reallocation every
     // time metadata is sampled from the tileset.
@@ -43,6 +46,10 @@ public class VrMetadataPicker : MonoBehaviour
     private const float RAYCAST_DISTANCE = 1000.0f;
     private const float HIT_LOCATION_RESET = -3000.0f;
     private const float RAY_VISUAL_LINE_LENGTH = 40.0f;
+    private const float SELECT_HAPTICS_AMP = 1.0f;
+    private const float SELECT_HAPTICS_DUR = 0.1f;
+    private const float HOVER_ON_HAPTICS_AMP = 0.2f;
+    private const float HOVER_ON_HAPTICS_DUR = 0.02f;
     
     private void Awake()
     {
@@ -90,6 +97,7 @@ public class VrMetadataPicker : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;      // ignore input when hovering over UI object
         if (hoveredMetadataLeft == string.Empty) return;
+        hapticsLeft.SendHapticImpulse(SELECT_HAPTICS_AMP, SELECT_HAPTICS_DUR);
         selectedMetadataLeft = hoveredMetadataLeft;
         metadataTextLeft.text = selectedMetadataLeft;
     }
@@ -98,6 +106,7 @@ public class VrMetadataPicker : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
         if (hoveredMetadataRight == string.Empty) return;
+        hapticsRight.SendHapticImpulse(SELECT_HAPTICS_AMP, SELECT_HAPTICS_DUR);
         selectedMetadataRight = hoveredMetadataRight;
         metadataTextRight.text = selectedMetadataRight;
     }
@@ -174,10 +183,12 @@ public class VrMetadataPicker : MonoBehaviour
             if (isLeft)
             {
                 hoveredMetadataLeft = sb.ToString();
+                hapticsLeft.SendHapticImpulse(HOVER_ON_HAPTICS_AMP, HOVER_ON_HAPTICS_DUR);
             }
             else
             {
                 hoveredMetadataRight = sb.ToString(); 
+                hapticsRight.SendHapticImpulse(HOVER_ON_HAPTICS_AMP, HOVER_ON_HAPTICS_DUR);
             }
             
             return; 
@@ -189,6 +200,7 @@ public class VrMetadataPicker : MonoBehaviour
             if (!hoverOnLeft) return;
             hoverOnLeft = false;
             Debug.Log("Hover off left!");
+            
             hoveredMetadataLeft = string.Empty;
             hitLocationLeftObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
             leftLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;

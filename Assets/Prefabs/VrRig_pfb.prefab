@@ -1359,6 +1359,8 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 4
   hoverOffDelay: 0.15
+  hapticsLeft: {fileID: 5967689310316253315}
+  hapticsRight: {fileID: 4238984354899526239}
 --- !u!1 &1787516059220952802
 GameObject:
   m_ObjectHideFlags: 0
