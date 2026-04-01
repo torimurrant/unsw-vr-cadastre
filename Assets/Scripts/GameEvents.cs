@@ -17,4 +17,11 @@ public static class GameEvents
     /// </summary>
     public static event Action onModelMetadataHoverOffAll;
     public static void OnModelMetadataHoverOffAll() { onModelMetadataHoverOffAll?.Invoke(); }
+
+    /// <summary>
+    /// Caller: VrMetadataPicker
+    /// Listeners: CesiumTilesetHider
+    /// </summary>
+    public static event Action<TileType> onTileViewChanged;
+    public static void OnTileViewChanged(TileType tileType) { onTileViewChanged?.Invoke(tileType); }
 }

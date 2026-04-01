@@ -14,6 +14,8 @@ public class VrMetadataPicker : MonoBehaviour
     [SerializeField] private Transform rightControllerTransform = null;
     [SerializeField] private TextMeshProUGUI metadataTextLeft = null;
     [SerializeField] private TextMeshProUGUI metadataTextRight = null;
+    [SerializeField] private TextMeshProUGUI tileViewTextLeft = null;
+    [SerializeField] private TextMeshProUGUI tileViewTextRight = null;
     [SerializeField] private GameObject hitLocationVisualPrefab = null;
     [SerializeField] private CurveVisualController leftLineVisual = null;
     [SerializeField] private CurveVisualController rightLineVisual = null;
@@ -35,12 +37,13 @@ public class VrMetadataPicker : MonoBehaviour
     private bool hoverOnLeft = false;
     private bool hoverOnRight = false;
     private float hoverOffTimer = 0f;
+    private uint currentTileViewIndex = 0;
     
     private const float SPHERECAST_RADIUS = 0.1f; // tweak 0.02–0.1
     private const float RAYCAST_DISTANCE = 1000.0f;
     private const float HIT_LOCATION_RESET = -3000.0f;
     private const float RAY_VISUAL_LINE_LENGTH = 40.0f;
-
+    
     private void Awake()
     {
         vrControls = new VrControls();
@@ -50,6 +53,8 @@ public class VrMetadataPicker : MonoBehaviour
     {
         vrControls.XRILeftInteraction.Activate.performed += OnTriggerPressLeft;
         vrControls.XRIRightInteraction.Activate.performed += OnTriggerPressRight;
+        vrControls.XRILeftInteraction.TileViewChange.performed += OnTileViewChange;
+        vrControls.XRIRightInteraction.TileViewChange.performed += OnTileViewChange;
         vrControls.Enable();
     }
     
@@ -57,6 +62,7 @@ public class VrMetadataPicker : MonoBehaviour
     {
         vrControls.XRILeftInteraction.Activate.performed -= OnTriggerPressLeft;
         vrControls.XRIRightInteraction.Activate.performed -= OnTriggerPressRight;
+        vrControls.XRIRightInteraction.TileViewChange.performed -= OnTileViewChange;
         vrControls.Disable();
     }
     
@@ -75,12 +81,12 @@ public class VrMetadataPicker : MonoBehaviour
         leftLineVisual.restingVisualLineLength = RAY_VISUAL_LINE_LENGTH;
         rightLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
         rightLineVisual.restingVisualLineLength = RAY_VISUAL_LINE_LENGTH;
-        
+        currentTileViewIndex = 0;
     }
     
     // We might need separate left/right functions if we need to distinguish between the 
     // two controller inputs, for some reason.
-    private void OnTriggerPressLeft(InputAction.CallbackContext obj)
+    private void OnTriggerPressLeft(InputAction.CallbackContext ctx)
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;      // ignore input when hovering over UI object
         if (hoveredMetadataLeft == string.Empty) return;
@@ -88,7 +94,7 @@ public class VrMetadataPicker : MonoBehaviour
         metadataTextLeft.text = selectedMetadataLeft;
     }
     
-    private void OnTriggerPressRight(InputAction.CallbackContext obj)
+    private void OnTriggerPressRight(InputAction.CallbackContext ctx)
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
         if (hoveredMetadataRight == string.Empty) return;
@@ -196,6 +202,35 @@ public class VrMetadataPicker : MonoBehaviour
             hitLocationRightObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
             rightLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
         }
+    }
+
+    // Simple implementation of tile view changes will just cycle through the tile types
+    private void OnTileViewChange(InputAction.CallbackContext obj)
+    {
+        int maxValue = Enum.GetNames(typeof(TileType)).Length;
+        currentTileViewIndex++;
+        if (currentTileViewIndex == maxValue) currentTileViewIndex = 0;
+        
+        switch (currentTileViewIndex)
+        {
+            case 0:
+                GameEvents.OnTileViewChanged(TileType.All);
+                tileViewTextLeft.text = "ALL";
+                tileViewTextRight.text = "ALL";
+                break;
+            case 1:
+                GameEvents.OnTileViewChanged(TileType.Lot);
+                tileViewTextLeft.text = "LOT";
+                tileViewTextRight.text = "LOT";
+                break;
+            case 2:
+                GameEvents.OnTileViewChanged(TileType.Common);
+                tileViewTextLeft.text = "COMMON";
+                tileViewTextRight.text = "COMMON";
+                break;
+        }
+        
+        Debug.Log($"Tile view switched to {(TileType)currentTileViewIndex}.");
     }
     
     // private void CheckForHoverOff()

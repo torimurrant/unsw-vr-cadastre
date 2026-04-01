@@ -977,7 +977,7 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
                     ""name"": ""Activate"",
                     ""type"": ""Button"",
                     ""id"": ""0c0991c5-d329-4afc-8892-1076b440477c"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -1062,6 +1062,15 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TileViewChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""ab1aef8c-7625-4645-977b-b1d6c14b9d64"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1370,6 +1379,28 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
                     ""processors"": ""ScaleVector2(x=0),StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""Translate Manipulation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d0ae0aee-1546-4084-8551-8bca98e036fa"",
+                    ""path"": ""<XRController>{LeftHand}/{PrimaryButton}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TileViewChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e024ea4d-8f38-4c11-a6e9-11b9337c12b9"",
+                    ""path"": ""<XRController>{LeftHand}/{SecondaryButton}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TileViewChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2155,6 +2186,15 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TileViewChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""2206289b-dcd7-45b3-a16b-e2738b290dd2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -2446,6 +2486,28 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""6e7cd708-91bf-4606-b977-45a43c31f905"",
+                    ""path"": ""<XRController>{RightHand}/{PrimaryButton}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TileViewChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c767062d-3792-4f9a-bde5-556f6f5be8a2"",
+                    ""path"": ""<XRController>{RightHand}/{SecondaryButton}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TileViewChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c4b46d7d-8231-4672-83f9-75af565faf57"",
                     ""path"": ""<XRController>{RightHand}/{Primary2DAxis}"",
                     ""interactions"": """",
@@ -2633,7 +2695,7 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
                     ""name"": ""Submit"",
                     ""type"": ""Button"",
                     ""id"": ""eba98c2e-6268-4233-bb88-946287bc753c"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -3528,6 +3590,7 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
         m_XRILeftInteraction_Manipulation = m_XRILeftInteraction.FindAction("Manipulation", throwIfNotFound: true);
         m_XRILeftInteraction_ScaleToggle = m_XRILeftInteraction.FindAction("Scale Toggle", throwIfNotFound: true);
         m_XRILeftInteraction_ScaleOverTime = m_XRILeftInteraction.FindAction("Scale Over Time", throwIfNotFound: true);
+        m_XRILeftInteraction_TileViewChange = m_XRILeftInteraction.FindAction("TileViewChange", throwIfNotFound: true);
         // XRI Left Locomotion
         m_XRILeftLocomotion = asset.FindActionMap("XRI Left Locomotion", throwIfNotFound: true);
         m_XRILeftLocomotion_TeleportMode = m_XRILeftLocomotion.FindAction("Teleport Mode", throwIfNotFound: true);
@@ -3566,6 +3629,7 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
         m_XRIRightInteraction_Manipulation = m_XRIRightInteraction.FindAction("Manipulation", throwIfNotFound: true);
         m_XRIRightInteraction_ScaleToggle = m_XRIRightInteraction.FindAction("Scale Toggle", throwIfNotFound: true);
         m_XRIRightInteraction_ScaleOverTime = m_XRIRightInteraction.FindAction("Scale Over Time", throwIfNotFound: true);
+        m_XRIRightInteraction_TileViewChange = m_XRIRightInteraction.FindAction("TileViewChange", throwIfNotFound: true);
         // XRI Right Locomotion
         m_XRIRightLocomotion = asset.FindActionMap("XRI Right Locomotion", throwIfNotFound: true);
         m_XRIRightLocomotion_TeleportMode = m_XRIRightLocomotion.FindAction("Teleport Mode", throwIfNotFound: true);
@@ -4110,6 +4174,7 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_XRILeftInteraction_Manipulation;
     private readonly InputAction m_XRILeftInteraction_ScaleToggle;
     private readonly InputAction m_XRILeftInteraction_ScaleOverTime;
+    private readonly InputAction m_XRILeftInteraction_TileViewChange;
     /// <summary>
     /// Provides access to input actions defined in input action map "XRI Left Interaction".
     /// </summary>
@@ -4169,6 +4234,10 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "XRILeftInteraction/ScaleOverTime".
         /// </summary>
         public InputAction @ScaleOverTime => m_Wrapper.m_XRILeftInteraction_ScaleOverTime;
+        /// <summary>
+        /// Provides access to the underlying input action "XRILeftInteraction/TileViewChange".
+        /// </summary>
+        public InputAction @TileViewChange => m_Wrapper.m_XRILeftInteraction_TileViewChange;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -4231,6 +4300,9 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
             @ScaleOverTime.started += instance.OnScaleOverTime;
             @ScaleOverTime.performed += instance.OnScaleOverTime;
             @ScaleOverTime.canceled += instance.OnScaleOverTime;
+            @TileViewChange.started += instance.OnTileViewChange;
+            @TileViewChange.performed += instance.OnTileViewChange;
+            @TileViewChange.canceled += instance.OnTileViewChange;
         }
 
         /// <summary>
@@ -4278,6 +4350,9 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
             @ScaleOverTime.started -= instance.OnScaleOverTime;
             @ScaleOverTime.performed -= instance.OnScaleOverTime;
             @ScaleOverTime.canceled -= instance.OnScaleOverTime;
+            @TileViewChange.started -= instance.OnTileViewChange;
+            @TileViewChange.performed -= instance.OnTileViewChange;
+            @TileViewChange.canceled -= instance.OnTileViewChange;
         }
 
         /// <summary>
@@ -4717,6 +4792,7 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_XRIRightInteraction_Manipulation;
     private readonly InputAction m_XRIRightInteraction_ScaleToggle;
     private readonly InputAction m_XRIRightInteraction_ScaleOverTime;
+    private readonly InputAction m_XRIRightInteraction_TileViewChange;
     /// <summary>
     /// Provides access to input actions defined in input action map "XRI Right Interaction".
     /// </summary>
@@ -4776,6 +4852,10 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "XRIRightInteraction/ScaleOverTime".
         /// </summary>
         public InputAction @ScaleOverTime => m_Wrapper.m_XRIRightInteraction_ScaleOverTime;
+        /// <summary>
+        /// Provides access to the underlying input action "XRIRightInteraction/TileViewChange".
+        /// </summary>
+        public InputAction @TileViewChange => m_Wrapper.m_XRIRightInteraction_TileViewChange;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -4838,6 +4918,9 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
             @ScaleOverTime.started += instance.OnScaleOverTime;
             @ScaleOverTime.performed += instance.OnScaleOverTime;
             @ScaleOverTime.canceled += instance.OnScaleOverTime;
+            @TileViewChange.started += instance.OnTileViewChange;
+            @TileViewChange.performed += instance.OnTileViewChange;
+            @TileViewChange.canceled += instance.OnTileViewChange;
         }
 
         /// <summary>
@@ -4885,6 +4968,9 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
             @ScaleOverTime.started -= instance.OnScaleOverTime;
             @ScaleOverTime.performed -= instance.OnScaleOverTime;
             @ScaleOverTime.canceled -= instance.OnScaleOverTime;
+            @TileViewChange.started -= instance.OnTileViewChange;
+            @TileViewChange.performed -= instance.OnTileViewChange;
+            @TileViewChange.canceled -= instance.OnTileViewChange;
         }
 
         /// <summary>
@@ -5720,6 +5806,13 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScaleOverTime(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "TileViewChange" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTileViewChange(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "XRI Left Locomotion" which allows adding and removing callbacks.
@@ -5968,6 +6061,13 @@ public partial class @VrControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScaleOverTime(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "TileViewChange" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTileViewChange(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "XRI Right Locomotion" which allows adding and removing callbacks.

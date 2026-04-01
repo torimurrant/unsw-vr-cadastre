@@ -487,8 +487,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3634758690954319629, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 4064735480215975608, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4478360417567946116, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4739788986401952118, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
@@ -547,6 +555,10 @@ PrefabInstance:
       propertyPath: _localToGlobeFixedMatrix.c3.z
       value: -3447103.741685347
       objectReference: {fileID: 0}
+    - target: {fileID: 7814132523072359954, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 80
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -563,6 +575,7 @@ GameObject:
   - component: {fileID: 803619652}
   - component: {fileID: 803619654}
   - component: {fileID: 803619653}
+  - component: {fileID: 803619655}
   m_Layer: 0
   m_Name: LotParcels
   m_TagString: Untagged
@@ -643,6 +656,19 @@ MonoBehaviour:
   _updateInEditor: 1
   _logSelectionStats: 0
   _createPhysicsMeshes: 1
+--- !u!114 &803619655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803619651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6652544b0c3025b4e9c78ebdeb3f26f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CesiumTilesetHider
+  tileType: 1
 --- !u!1 &816304000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,6 +1131,7 @@ GameObject:
   - component: {fileID: 1024639266}
   - component: {fileID: 1024639268}
   - component: {fileID: 1024639267}
+  - component: {fileID: 1024639269}
   m_Layer: 0
   m_Name: CommonProperties
   m_TagString: Untagged
@@ -1185,6 +1212,19 @@ MonoBehaviour:
   _updateInEditor: 1
   _logSelectionStats: 0
   _createPhysicsMeshes: 1
+--- !u!114 &1024639269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024639265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6652544b0c3025b4e9c78ebdeb3f26f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CesiumTilesetHider
+  tileType: 2
 --- !u!1 &1064317267
 GameObject:
   m_ObjectHideFlags: 0
