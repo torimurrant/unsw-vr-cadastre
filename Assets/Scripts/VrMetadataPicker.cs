@@ -215,18 +215,18 @@ public class VrMetadataPicker : MonoBehaviour
         {
             case 0:
                 GameEvents.OnTileViewChanged(TileType.All);
-                tileViewTextLeft.text = "ALL";
-                tileViewTextRight.text = "ALL";
+                tileViewTextLeft.text = "View mode: ALL";
+                tileViewTextRight.text = "View mode: ALL";
                 break;
             case 1:
                 GameEvents.OnTileViewChanged(TileType.Lot);
-                tileViewTextLeft.text = "LOT";
-                tileViewTextRight.text = "LOT";
+                tileViewTextLeft.text = "View mode: LOT";
+                tileViewTextRight.text = "View mode: LOT";
                 break;
             case 2:
                 GameEvents.OnTileViewChanged(TileType.Common);
-                tileViewTextLeft.text = "COMMON";
-                tileViewTextRight.text = "COMMON";
+                tileViewTextLeft.text = "View mode: COMMON";
+                tileViewTextRight.text = "View mode: COMMON";
                 break;
         }
         

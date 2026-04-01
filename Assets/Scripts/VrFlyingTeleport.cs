@@ -34,44 +34,66 @@ public class VrFlyingTeleport : MonoBehaviour
     private void OnEnable()
     {
         vrControls.Enable();
-        vrControls.XRILeftLocomotion.TeleportMode.started += StartTeleport;
-        vrControls.XRIRightLocomotion.TeleportMode.started += StartTeleport;
-        vrControls.XRILeftLocomotion.TeleportMode.canceled += ConfirmTeleport;
-        vrControls.XRIRightLocomotion.TeleportMode.canceled += ConfirmTeleport;
-        vrControls.XRILeftLocomotion.TeleportModeCancel.performed += CancelTeleport;
-        vrControls.XRIRightLocomotion.TeleportModeCancel.performed += CancelTeleport;
+        vrControls.XRILeftInteraction.Select.performed += TeleportLeft;
+        vrControls.XRIRightInteraction.Select.performed += TeleportRight;
+        // vrControls.XRILeftLocomotion.TeleportModeCancel.performed += CancelTeleport;
+        // vrControls.XRIRightLocomotion.TeleportModeCancel.performed += CancelTeleport;
     }
     
     private void OnDisable()
     {
         vrControls.Disable();
-        vrControls.XRILeftLocomotion.TeleportMode.started -= StartTeleport;
-        vrControls.XRIRightLocomotion.TeleportMode.started -= StartTeleport;
-        vrControls.XRILeftLocomotion.TeleportMode.canceled -= ConfirmTeleport;
-        vrControls.XRIRightLocomotion.TeleportMode.canceled -= ConfirmTeleport;
-        vrControls.XRILeftLocomotion.TeleportModeCancel.performed -= CancelTeleport;
-        vrControls.XRIRightLocomotion.TeleportModeCancel.performed -= CancelTeleport;
+        vrControls.XRILeftInteraction.Select.performed -= TeleportLeft;
+        vrControls.XRIRightInteraction.Select.performed -= TeleportRight;
+        // vrControls.XRILeftLocomotion.TeleportModeCancel.performed -= CancelTeleport;
+        // vrControls.XRIRightLocomotion.TeleportModeCancel.performed -= CancelTeleport;
     }
 
-    private void StartTeleport(InputAction.CallbackContext ctx)
+    private void TeleportLeft(InputAction.CallbackContext ctx)
+    {
+        int num = (int)ctx.ReadValue<float>();
+        activeController = leftController.transform;
+        Teleport(num);
+    }
+
+    private void TeleportRight(InputAction.CallbackContext ctx)
+    {
+        int num = (int)ctx.ReadValue<float>();
+        activeController = rightController.transform;
+        Teleport(num);
+    }
+
+    private void Teleport(int value)
+    {
+        switch (value)
+        {
+            case 1:
+                StartTeleport();
+                break;
+            case 0:
+                ConfirmTeleport();
+                break;
+        }
+    }
+    
+    private void StartTeleport()
     {
         if (teleporting || previewing) return;
         previewing = true;
-        activeController = ctx.action.actionMap == (InputActionMap)vrControls.XRILeftLocomotion ? leftController.transform : rightController.transform;
         if (teleportPreview) Destroy(teleportPreview);
         teleportPreview = Instantiate(teleportPreviewPrefab, teleportPosition, Quaternion.identity);
     }
     
-    private void CancelTeleport(InputAction.CallbackContext ctx)
-    {
-        if (teleportCoroutine != null) StopCoroutine(teleportCoroutine);
-        // leftController.SetActive(true);
-        // rightController.SetActive(true);
-        teleporting = false;
-        Destroy(teleportPreview);
-    }
+    // private void CancelTeleport(InputAction.CallbackContext ctx)
+    // {
+    //     if (teleportCoroutine != null) StopCoroutine(teleportCoroutine);
+    //     // leftController.SetActive(true);
+    //     // rightController.SetActive(true);
+    //     teleporting = false;
+    //     Destroy(teleportPreview);
+    // }
     
-    private void ConfirmTeleport(InputAction.CallbackContext ctx)
+    private void ConfirmTeleport()
     {
         if (teleporting) return;
         if (teleportCoroutine != null) StopCoroutine(teleportCoroutine);

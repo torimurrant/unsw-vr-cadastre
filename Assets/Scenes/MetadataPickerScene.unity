@@ -487,78 +487,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3634758690954319629, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 4064735480215975608, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4478360417567946116, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4739788986401952118, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c0.x
-      value: 0.3490452278679148
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c0.y
-      value: -0.4642550794411199
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c0.z
-      value: -0.8140237293829203
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c1.x
-      value: -0.7395104973257242
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c1.y
-      value: 0.39707754143053997
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c1.z
-      value: -0.5435564832071621
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c2.x
-      value: -0.5755793994218523
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c2.y
-      value: -0.7917048894908767
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c2.z
-      value: 0.20472348375343155
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c3.x
-      value: -4721403.571679506
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c3.y
-      value: 2535140.9197363933
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757326757604621492, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: _localToGlobeFixedMatrix.c3.z
-      value: -3447103.741685347
-      objectReference: {fileID: 0}
-    - target: {fileID: 7814132523072359954, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 80
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1242,7 +1170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1064317268
 Transform:
   m_ObjectHideFlags: 0

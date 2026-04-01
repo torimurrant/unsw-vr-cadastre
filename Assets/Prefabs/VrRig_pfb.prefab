@@ -60,7 +60,7 @@ MonoBehaviour:
   m_SnapTurn: {fileID: -7374733323251553461, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_Move: {fileID: 6972639530819350904, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_UIScroll: {fileID: 2464016903823916871, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  m_SmoothMotionEnabled: 1
+  m_SmoothMotionEnabled: 0
   m_SmoothTurnEnabled: 0
   m_NearFarEnableTeleportDuringNearInteraction: 0
   m_UIScrollingEnabled: 1
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_SnapTurn: {fileID: -8525429354371678379, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_Move: {fileID: -8198699208435500284, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_UIScroll: {fileID: -6756787485274679044, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  m_SmoothMotionEnabled: 1
+  m_SmoothMotionEnabled: 0
   m_SmoothTurnEnabled: 0
   m_NearFarEnableTeleportDuringNearInteraction: 0
   m_UIScrollingEnabled: 1
@@ -623,7 +623,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -982,7 +982,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ALL
+  m_text: 'View mode: ALL'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: efaf65009f0afff4393e87eeee144d8c, type: 2}
   m_sharedMaterial: {fileID: -621600457610754171, guid: efaf65009f0afff4393e87eeee144d8c, type: 2}
@@ -1009,8 +1009,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1224,24 +1224,24 @@ MonoBehaviour:
   _detectTransformChanges: 1
   _localToGlobeFixedMatrix:
     c0:
-      x: -0.2814819980826394
-      y: 0.5511739431609101
-      z: 0.7854776763536959
+      x: 0.3490452278679148
+      y: -0.4642550794411199
+      z: -0.8140237293829203
       w: 0
     c1:
-      x: -0.4020752399095455
-      y: 0.6755006815582711
-      z: -0.6180892584900122
+      x: -0.7395104973257242
+      y: 0.39707754143053997
+      z: -0.5435564832071621
       w: 0
     c2:
-      x: 0.871265398239834
-      y: 0.48980212576379695
-      z: -0.031472115611999585
+      x: -0.5755793994218523
+      y: -0.7917048894908767
+      z: 0.20472348375343155
       w: 0
     c3:
-      x: -4721577.860219311
-      y: 2534983.429221443
-      z: -3447141.713928526
+      x: -4721403.571679506
+      y: 2535140.9197363933
+      z: -3447103.741685347
       w: 1
   _localToGlobeFixedMatrixIsValid: 1
 --- !u!114 &4739788986401952118
@@ -2861,7 +2861,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ALL
+  m_text: 'View mode: ALL'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: efaf65009f0afff4393e87eeee144d8c, type: 2}
   m_sharedMaterial: {fileID: -621600457610754171, guid: efaf65009f0afff4393e87eeee144d8c, type: 2}
@@ -2888,8 +2888,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
