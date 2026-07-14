@@ -36,8 +36,6 @@ public class VrFlyingTeleport : MonoBehaviour
         vrControls.Enable();
         vrControls.XRILeftInteraction.Select.performed += TeleportLeft;
         vrControls.XRIRightInteraction.Select.performed += TeleportRight;
-        // vrControls.XRILeftLocomotion.TeleportModeCancel.performed += CancelTeleport;
-        // vrControls.XRIRightLocomotion.TeleportModeCancel.performed += CancelTeleport;
     }
     
     private void OnDisable()
@@ -45,8 +43,6 @@ public class VrFlyingTeleport : MonoBehaviour
         vrControls.Disable();
         vrControls.XRILeftInteraction.Select.performed -= TeleportLeft;
         vrControls.XRIRightInteraction.Select.performed -= TeleportRight;
-        // vrControls.XRILeftLocomotion.TeleportModeCancel.performed -= CancelTeleport;
-        // vrControls.XRIRightLocomotion.TeleportModeCancel.performed -= CancelTeleport;
     }
 
     private void TeleportLeft(InputAction.CallbackContext ctx)
@@ -83,15 +79,6 @@ public class VrFlyingTeleport : MonoBehaviour
         if (teleportPreview) Destroy(teleportPreview);
         teleportPreview = Instantiate(teleportPreviewPrefab, teleportPosition, Quaternion.identity);
     }
-    
-    // private void CancelTeleport(InputAction.CallbackContext ctx)
-    // {
-    //     if (teleportCoroutine != null) StopCoroutine(teleportCoroutine);
-    //     // leftController.SetActive(true);
-    //     // rightController.SetActive(true);
-    //     teleporting = false;
-    //     Destroy(teleportPreview);
-    // }
     
     private void ConfirmTeleport()
     {
