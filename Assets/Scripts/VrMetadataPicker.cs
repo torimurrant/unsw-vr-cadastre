@@ -91,8 +91,6 @@ public class VrMetadataPicker : MonoBehaviour
         currentTileViewIndex = 0;
     }
     
-    // We might need separate left/right functions if we need to distinguish between the 
-    // two controller inputs, for some reason.
     private void OnTriggerPressLeft(InputAction.CallbackContext ctx)
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;      // ignore input when hovering over UI object
@@ -111,11 +109,6 @@ public class VrMetadataPicker : MonoBehaviour
         metadataTextRight.text = selectedMetadataRight;
     }
     
-    // Right now, both controllers are raycasting all the time, so if the user is waving
-    // both around the metadata will change a lot. We could perhaps only use one controller
-    // for metadata hovering/picking (and maybe other related stuff like building 'level selection')
-    // and the other controller for things like player movement. Or perhaps searching for metadata
-    // could require a button press-hold, and then some other input for selecting (release, or button press).
     private void Update()
     {
         // // Reset per-frame state
@@ -130,7 +123,6 @@ public class VrMetadataPicker : MonoBehaviour
     {
         RaycastHit hit;
         
-        // Raycast hit detected
         if (Physics.SphereCast(controllerTransform.position, SPHERECAST_RADIUS, controllerTransform.TransformDirection(Vector3.forward), out hit, RAYCAST_DISTANCE))
         {
             CesiumPrimitiveFeatures features = hit.transform.GetComponent<CesiumPrimitiveFeatures>();
@@ -194,7 +186,6 @@ public class VrMetadataPicker : MonoBehaviour
             return; 
         }
         
-        // No raycast hit detected
         if (isLeft)
         {
             if (!hoverOnLeft) return;
@@ -216,7 +207,6 @@ public class VrMetadataPicker : MonoBehaviour
         }
     }
 
-    // Simple implementation of tile view changes will just cycle through the tile types
     private void OnTileViewChange(InputAction.CallbackContext obj)
     {
         int maxValue = Enum.GetNames(typeof(TileType)).Length;
@@ -244,32 +234,4 @@ public class VrMetadataPicker : MonoBehaviour
         
         Debug.Log($"Tile view switched to {(TileType)currentTileViewIndex}.");
     }
-    
-    // private void CheckForHoverOff()
-    // {
-    //     bool isHoveringAny = hoverOnLeft || hoverOnRight;
-    //
-    //     if (isHoveringAny)
-    //     {
-    //         // Reset timer immediately when we have a valid hit
-    //         hoverOffTimer = 0f;
-    //         wasHoveringAnyLastFrame = true;
-    //         return;
-    //     }
-    //
-    //     // No hover this frame → accumulate time
-    //     hoverOffTimer += Time.deltaTime;
-    //     
-    //     // Only trigger if we've been off for long enough
-    //     if (wasHoveringAnyLastFrame && hoverOffTimer >= hoverOffDelay)
-    //     {
-    //         GameEvents.OnModelMetadataHoverOffAll();
-    //         //Debug.Log("Hover OFF (debounced)");
-    //         wasHoveringAnyLastFrame = false;
-    //         hitLocationLeftObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
-    //         leftLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
-    //         hitLocationRightObject.transform.position = new Vector3(HIT_LOCATION_RESET, HIT_LOCATION_RESET, HIT_LOCATION_RESET);
-    //         rightLineVisual.noValidHitProperties.gradient = hoverOffLineGradient;
-    //     }
-    // }
 }
