@@ -13,20 +13,14 @@ public class MetadataPicker : MonoBehaviour
 {
     [SerializeField] private Camera cam = null;
     
-    // The GameObject with the UI to enable / disable depending on
-    // whether metadata has been picked.
     [SerializeField] private CanvasGroup metadataCanvas = null;
 
-    // The text to display the metadata properties.
     [SerializeField] private TextMeshProUGUI metadataText = null;
     
-    // Cached Dictionary of metadata values. This prevents reallocation every
-    // time metadata is sampled from the tileset.
     private Dictionary<String, CesiumMetadataValue> metadataValues = null;
 
     void Start()
     {
-        // Fix the cursor to the center of the screen and hide it.
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -58,8 +52,6 @@ public class MetadataPicker : MonoBehaviour
 #endif
 
         if (!receivedInput || !metadataText) return;
-        
-        //metadataText.text = "";
 
         RaycastHit hit;
         
