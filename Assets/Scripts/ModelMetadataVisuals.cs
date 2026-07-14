@@ -24,18 +24,11 @@ public class ModelMetadataVisuals : MonoBehaviour
         GameEvents.onModelMetadataHoverOn -= MetadataHoverOn;
         GameEvents.onModelMetadataHoverOffAll -= MetadataHoverOffAll;
     }
-
-    // Runtime CesiumModelMetadata doesn't seem to exist at the point.
-    // private void Start()
-    // {
-    //     metadataList = GetComponentsInChildren<CesiumModelMetadata>().ToList();
-    // }
     
     private void MetadataHoverOn(CesiumModelMetadata metadata)
     {
         if (!focusOnHover) return;
 
-        // Always refresh (Cesium streams objects)
         metadataList = GetComponentsInChildren<CesiumModelMetadata>(true).ToList();
 
         if (metadataList.Count == 0) return;
